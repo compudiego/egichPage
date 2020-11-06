@@ -1,0 +1,43 @@
+*{
+    font-family:'Renogare'; 
+}
+
+.hrQS {
+    height: 55%;
+    background-color: white;
+  }
+
+.quienesSomos{
+    padding: 3%;
+    background-color: #437bb2;
+    color:white;
+}
+#quienes{
+
+margin: 0%;}
+
+#imgF{
+    margin: 0%;
+    padding: 0%;
+}
+.ahr {
+    height: 5px;
+    background-color: black;
+    margin: 0%;
+  }
+.contact{
+    padding: 3%;
+    background-color: #437bb2;
+    color:white;
+    padding-top: 5%;
+}
+input{
+    border: black 2px solid;
+    margin: auto;
+    
+}
+form{
+    text-align: right;
+    margin-right: 10%;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
