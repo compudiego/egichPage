@@ -10,7 +10,6 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link rel="icon" type="image/png" href="images/favicon.png">
 
-    <script src="/js/validaciones.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.16/vue.min.js"></script>
@@ -164,8 +163,8 @@
             <p>Completá el formulario y te responderemos a la brevedad.</p>
         </div>
         <div id="app">
-                <input type="text" class="item" v-model="from_name" placeholder="Nombre*" require ><br>
-                <input type="email" class="item" v-model="from_email" placeholder="Email*" require><br>
+                <input type="text" id="name" class="item" v-model="from_name" placeholder="Nombre*" require ><br>
+                <input type="email" id="email" class="item" v-model="from_email" placeholder="Email*" require><br>
                 <input type="text" class="item" v-model="from_telefono" placeholder="Teléfono"><br>
                 <input type="text" class="item" v-model="from_empresa" placeholder="Empresa/Rubro"><br>
                 <textarea name="consulta" class="item" v-model="message" placeholder="Consulta" rows="5" style="resize: both"></textarea><br>
@@ -176,41 +175,55 @@
         (function(){
             emailjs.init("user_PIBsFZBqMXYhYuEKn1HKv");
          })();
-         
-        const vue = new Vue({
-            el: '#app',
-            data(){
-                return {
-                    from_name: '',
-                    from_email: '',
-                    from_telefono: '',
-                    from_empresa: '',
-                    message: ''
-                }
-            },
-            methods: {
-                enviar(){
-                    let data = {
-                        from_name: this.from_name,
-                        from_email: this.from_email,
-                        from_telefono: this.from_telefono,
-                        from_empresa: this.from_empresa,
-                        message: this.message,
-                    };
+
+
+            const vue = new Vue({
+                el: '#app',
+                data(){
+                    return {
+                        from_name: '',
+                        from_email: '',
+                        from_telefono: '',
+                        from_empresa: '',
+                        message: ''
+                    }
+                },
+                methods: {
+
                     
-                    emailjs.send("gmail","template_9plm9aj", data)
-                    .then(function(response) {
-                        if(response.text === 'OK'){
-                            alert('El correo se ha enviado de forma exitosa');
+                    enviar(){
+                        let data = {
+                            from_name: this.from_name,
+                            from_email: this.from_email,
+                            from_telefono: this.from_telefono,
+                            from_empresa: this.from_empresa,
+                            message: this.message,
+                        };
+                        
+                        expresion = /\w+@+\w+\.+[a-z]/;
+
+                        if(data.from_email === "" || data.from_name === ""){
+                            alert('Los campos de Email y nombre son obligatorios');
                         }
-                       console.log("SUCCESS. status=%d, text=%s", response.status, response.text);
-                    }, function(err) {
-                        alert('Ocurrió un problema al enviar el correo');
-                       console.log("FAILED. error=", err);
-                    });
+                        else if(!expresion.test(data.from_email)){
+                            alert('El email ingresado no es correcto');
+                        }
+                        else{
+                            emailjs.send("gmail","template_9plm9aj", data)
+                            .then(function(response) {
+                                if(response.text === 'OK'){
+                                    alert('El correo se ha enviado de forma exitosa');
+                                }
+                            console.log("SUCCESS. status=%d, text=%s", response.status, response.text);
+                            }, function(err) {
+                                alert('Ocurrió un problema al enviar el correo');
+                            console.log("FAILED. error=", err);
+                            }); 
+                        }
+                    }
                 }
-            }
-        });
+            });
+        
     </script>
 </body>
 </html>
