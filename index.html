@@ -165,6 +165,8 @@
                 <input type="text" class="item" v-model="from_telefono" placeholder="Teléfono"><br>
                 <input type="text" class="item" v-model="from_empresa" placeholder="Empresa/Rubro"><br>
                 <textarea name="consulta" class="item" v-model="message" placeholder="Consulta" rows="5" style="resize: both"></textarea><br>
+               <div id="loader2"></div>
+
                 <button class="item2" @click="enviar">Enviar</button>
         </div>
         
@@ -174,6 +176,7 @@
         (function(){
             emailjs.init("user_PIBsFZBqMXYhYuEKn1HKv");
          })();
+         document.getElementById('loader2').innerHTML = " ";
 
 
             const vue = new Vue({
@@ -191,6 +194,8 @@
 
                     
                     enviar(){
+                        loader2.innerHTML = "<div class='loader'></div>";
+
                         let data = {
                             from_name: this.from_name,
                             from_email: this.from_email,
@@ -208,9 +213,13 @@
                             alert('El email ingresado no es correcto');
                         }
                         else{
+
                             emailjs.send("gmail","template_9plm9aj", data)
                             .then(function(response) {
+                                loader2.innerHTML = "<div class='loader' style='display:none;'></div>";
+
                                 if(response.text === 'OK'){
+
                                     alert('El correo se ha enviado de forma exitosa');
                                 }
                             console.log("SUCCESS. status=%d, text=%s", response.status, response.text);
