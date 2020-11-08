@@ -161,13 +161,17 @@
         </div>
         <div id="app">
                 <input type="text" id="name" class="item" v-model="from_name" placeholder="Nombre*" require ><br>
+                <div id="name"></div>
                 <input type="email" id="email" class="item" v-model="from_email" placeholder="Email*" require><br>
+                <div id="mail"></div>
+                <div id="mail2"></div>
                 <input type="text" class="item" v-model="from_telefono" placeholder="Teléfono"><br>
                 <input type="text" class="item" v-model="from_empresa" placeholder="Empresa/Rubro"><br>
                 <textarea name="consulta" class="item" v-model="message" placeholder="Consulta" rows="5" style="resize: both"></textarea><br>
-               <div id="loader2"></div>
-
+                <div id="loader2"></div>
                 <button class="item2" @click="enviar">Enviar</button>
+                <div id="enviado"></div>
+
         </div>
         
     </div>
@@ -177,7 +181,10 @@
             emailjs.init("user_PIBsFZBqMXYhYuEKn1HKv");
          })();
          document.getElementById('loader2').innerHTML = " ";
-
+         document.getElementById('enviado').innerHTML = " ";
+         document.getElementById('name').innerHTML = " ";
+         document.getElementById('mail').innerHTML = " ";
+         document.getElementById('mail2').innerHTML = " ";
 
             const vue = new Vue({
                 el: '#app',
@@ -192,9 +199,7 @@
                 },
                 methods: {
 
-                    
                     enviar(){
-                        loader2.innerHTML = "<div class='loader'></div>";
 
                         let data = {
                             from_name: this.from_name,
@@ -206,25 +211,25 @@
                         
                         expresion = /\w+@+\w+\.+[a-z]/;
 
-                        if(data.from_email === "" || data.from_name === ""){
-                            alert('Los campos de Email y nombre son obligatorios');
+                        if(data.from_email === "" || data.from_name === "" ){
+                            enviado.innerHTML = "<div>Los campos * son obligatorios</div>"
                         }
                         else if(!expresion.test(data.from_email)){
-                            alert('El email ingresado no es correcto');
+                            enviado.innerHTML = "<div>Email incorrecto</div>"
                         }
                         else{
+                            loader2.innerHTML = "<div class='loader'></div>";
 
                             emailjs.send("gmail","template_9plm9aj", data)
                             .then(function(response) {
                                 loader2.innerHTML = "<div class='loader' style='display:none;'></div>";
 
                                 if(response.text === 'OK'){
-
-                                    alert('El correo se ha enviado de forma exitosa');
+                                    enviado.innerHTML = "<div>Mensaje Enviado</div>"
                                 }
                             console.log("SUCCESS. status=%d, text=%s", response.status, response.text);
                             }, function(err) {
-                                alert('Ocurrió un problema al enviar el correo');
+                                enviado.innerHTML = "<div>Mensaje NO Enviado</div>"
                             console.log("FAILED. error=", err);
                             }); 
                         }
